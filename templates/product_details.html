@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="product-details">
+        <h1>Product Details</h1>
+        <div id="product-info"></div>
+        <h2>Product Reviews</h2>
+        <ul id="product-reviews"></ul>
+        <form id="review-form">
+            <label for="rating">Rating:</label>
+            <input type="number" id="rating" name="rating" min="1" max="5" required>
+            <label for="comment">Comment:</label>
+            <textarea id="comment" name="comment" required></textarea>
+            <button type="submit">Submit Review</button>
+        </form>
+    </div>
+
+    <script>
+        // Function to fetch product details and reviews
+        async function getProductDetails(productId) {
+            const response = await fetch(`/products/${productId}`);
+            const product = await response.json();
+            document.getElementById('product-info').innerHTML = `
+                <h3>${product.name}</h3>
+                <p>${product.description}</p>
+                <p>Price: $${product.price}</p>
+            `;
+
+            const reviewsResponse = await fetch(`/products/${productId}/reviews`);
+            const reviews = await reviewsResponse.json();
+            const reviewsList = document.getElementById('product-reviews');
+            reviewsList.innerHTML = '';
+            reviews.forEach(review => {
+                reviewsList.innerHTML += `<li>${review.rating} stars - ${review.comment}</li>`;
+            });
+        }
+
+        // Submit review form
+        document.getElementById('review-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const productId = window.location.pathname.split('/').pop();
+            const formData = new FormData(this);
+            const reviewData = {
+                rating: formData.get('rating'),
+                comment: formData.get('comment')
+            };
+            const response = await fetch(`/products/${productId}/reviews`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(reviewData)
+            });
+            if (response.ok) {
+                alert('Review submitted successfully');
+                this.reset();
+                getProductDetails(productId);
+            } else {
+                const errorData = await response.json();
+                alert(errorData.error);
+            }
+        });
+
+        // Call getProductDetails function when the page loads
+        window.onload = function() {
+            const productId = window.location.pathname.split('/').pop();
+            getProductDetails(productId);
+        };
+    </script>
+</body>
+</html>

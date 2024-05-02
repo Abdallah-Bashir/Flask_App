@@ -1,0 +1,65 @@
+/* styles.css */
+
+/* Apply styles to product details */
+#product-details {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+}
+
+h1, h2, h3 {
+    color: #333;
+}
+
+/* Apply styles to review form */
+#review-form {
+    margin-top: 20px;
+}
+
+#review-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+#review-form input[type="number"],
+#review-form textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#review-form button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#review-form button:hover {
+    background-color: #0056b3;
+}
+
+/* Apply styles to product reviews */
+#product-reviews {
+    list-style-type: none;
+    padding: 0;
+}
+
+#product-reviews li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+#product-reviews li:last-child {
+    margin-bottom: 0;
+}
